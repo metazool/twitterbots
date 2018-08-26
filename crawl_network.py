@@ -142,7 +142,7 @@ def parse_args():
 
 def write_graph(session, graph_filename):
     """Writes the entries in the database to a GEXF file
-    
+
     Arguments:
         session {sqlalchemy.orm.Session} -- The database session
         graph_filename {str} -- The filename to write the graph to
@@ -173,7 +173,7 @@ def write_graph(session, graph_filename):
 
 def add_node(session, id, screen_name):
     """Adds a new node to the database
-    
+
     Arguments:
         session {sqlalchemy.orm.Session} -- The database session
         id {int} -- The Twitter account ID
@@ -186,7 +186,7 @@ def add_node(session, id, screen_name):
 
 def add_edge(session, source, target):
     """Adds a new edge to the database
-    
+
     Arguments:
         session {sqlalchemy.orm.Session} -- The database session
         source {str} -- The source Twitter screen name
@@ -227,7 +227,7 @@ def main():
 
     crawl_queue = queue.Queue()
     current_count = 0
-
+    logging.info(args.user)
     # Add the initial user to crawl
     try:
         user = api.get_user(screen_name=args.user)
@@ -286,9 +286,10 @@ def main():
 
     except KeyboardInterrupt:
         print('CTRL+C received... shutting down')
+        write_graph(session, args.graph_file)
 
     write_graph(session, args.graph_file)
-    os.remove(database_path)
+    # os.remove(database_path)
 
     streamer.close()
 
